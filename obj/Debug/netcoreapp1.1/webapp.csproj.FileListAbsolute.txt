@@ -1,0 +1,8 @@
+c:\Users\marko.milojevic\Desktop\webapp\bin\Debug\netcoreapp1.1\webapp.deps.json
+c:\Users\marko.milojevic\Desktop\webapp\bin\Debug\netcoreapp1.1\webapp.runtimeconfig.json
+c:\Users\marko.milojevic\Desktop\webapp\bin\Debug\netcoreapp1.1\webapp.runtimeconfig.dev.json
+c:\Users\marko.milojevic\Desktop\webapp\bin\Debug\netcoreapp1.1\webapp.dll
+c:\Users\marko.milojevic\Desktop\webapp\bin\Debug\netcoreapp1.1\webapp.pdb
+c:\Users\marko.milojevic\Desktop\webapp\obj\Debug\netcoreapp1.1\webapp.AssemblyInfo.cs
+c:\Users\marko.milojevic\Desktop\webapp\obj\Debug\netcoreapp1.1\webapp.dll
+c:\Users\marko.milojevic\Desktop\webapp\obj\Debug\netcoreapp1.1\webapp.pdb
