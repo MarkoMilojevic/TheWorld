@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using WebApp.Models;
 using WebApp.Services;
 using WebApp.ViewModels;
@@ -13,20 +14,30 @@ namespace WebApp.Controllers
     {
         private readonly IMailService _mailService;
         private readonly IConfigurationRoot _config;
-        private readonly WorldContext _context;
+        private readonly IWorldRepository _repository;
+        private readonly ILogger<AppController> _logger;
 
-        public AppController(IMailService mailService, IConfigurationRoot config, WorldContext context)
+        public AppController(IMailService mailService, IConfigurationRoot config, IWorldRepository repository, ILogger<AppController> logger)
         {
             _mailService = mailService;
             _config = config;
-            _context = context;
+            _repository = repository;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            List<Trip> data = _context.Trips.ToList();
+            try
+            {
+                IEnumerable<Trip> data = _repository.GetAllTrips();
 
-            return View();
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get trips in Index page: {ex.Message}");
+                return Redirect("/error");
+            }
         }
 
         public IActionResult Contact()
@@ -47,7 +58,7 @@ namespace WebApp.Controllers
                 _mailService.SendMail(_config["MailSettings:ToAddress"], model.Email, "From TheWorld", model.Message);
 
                 ModelState.Clear();
-                
+
                 ViewBag.UserMessage = "Message sent";
             }
 

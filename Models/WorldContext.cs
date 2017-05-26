@@ -14,7 +14,7 @@ namespace WebApp.Models
         }
 
         public DbSet<Trip> Trips { get; set; }
-        public DbSet<Trip> Stops { get; set; }
+        public DbSet<Stop> Stops { get; set; }
 
         override protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

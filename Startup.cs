@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 using Microsoft.AspNetCore.StaticFiles;
 using WebApp.Services;
 using Microsoft.Extensions.Configuration;
 using WebApp.Models;
+using WebApp.ViewModels;
+using Newtonsoft.Json.Serialization;
 
 namespace WebApp
 {
@@ -48,15 +52,38 @@ namespace WebApp
 
             services.AddDbContext<WorldContext>();
 
-            services.AddMvc();
+            services.AddScoped<IWorldRepository, WorldRepository>();
+
+            services.AddTransient<GeoCoordsService>();
+
+            services.AddTransient<WorldContextSeedData>();
+
+            services.AddLogging();
+
+            services.AddMvc()
+                .AddJsonOptions(config =>
+                {
+                    config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, WorldContextSeedData seeder)
         {
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<TripViewModel, Trip>().ReverseMap();
+                config.CreateMap<StopViewModel, Stop>().ReverseMap();
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                loggerFactory.AddDebug(LogLevel.Information);
+            }
+            else
+            {
+                loggerFactory.AddDebug(LogLevel.Error);
             }
             
             app.UseStaticFiles();
@@ -69,6 +96,8 @@ namespace WebApp
                     defaults: new { controller = "App", action = "Index" }
                 );
             });
+
+            seeder.Seed().Wait();
         }
     }
 }
