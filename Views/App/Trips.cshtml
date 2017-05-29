@@ -9,10 +9,20 @@
     <script src="http://maps.googleapis.com/maps/api/js?sensor=true&key=AIzaSyCbHDbN6jLhHjiYOzBT8DYJaZN3Wl689Ek"></script>
     <script src="~/lib/gmaps/gmaps.min.js"></script>
     <script src="~/lib/travelmap/travelmap.min.js"></script>
-    <script src="~/js/simple-controls.js"></script>
-    <script src="~/js/app-trips.js"></script>
-    <script src="~/js/trips-controller.js"></script>
-    <script src="~/js/trip-editor-controller.js"></script>
+
+    <environment names="Development">
+        <script src="~/js/simple-controls.js"></script>
+        <script src="~/js/app-trips.js"></script>
+        <script src="~/js/trips-controller.js"></script>
+        <script src="~/js/trip-editor-controller.js"></script>
+    </environment>
+
+    <environment names="Production,Staging">
+        <script src="~/lib/_app/simple-controls.js"></script>
+        <script src="~/lib/_app/app-trips.js"></script>
+        <script src="~/lib/_app/trips-controller.js"></script>
+        <script src="~/lib/_app/trip-editor-controller.js"></script>
+    </environment>
 }
 
 <div class="row" data-ng-app="app-trips">   

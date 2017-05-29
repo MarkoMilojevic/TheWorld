@@ -19,4 +19,14 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
   </ItemGroup>
+  <Target Name="PrePublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="npm install" />
+    <Exec Command="bower install" />
+  </Target>
+  <Target Name="PostPublishScript" AfterTargets="PrepareForPublish">
+    <Exec Command="node_modules\.bin\gulp minify" />
+  </Target>
+  <Target Name="PostBuildScript" AfterTargets="Build">
+    <Exec Command="node_modules\.bin\gulp minify" />
+  </Target>
 </Project>
