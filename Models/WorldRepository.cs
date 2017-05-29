@@ -31,6 +31,7 @@ namespace WebApp.Models
                     .Trips
                     .Include(t => t.Stops)
                     .Where(t => t.UserName == username)
+                    .OrderBy(t => t.Name)
                     .ToList();
         }
 

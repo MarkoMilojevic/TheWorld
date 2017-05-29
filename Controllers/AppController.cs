@@ -34,17 +34,7 @@ namespace WebApp.Controllers
         [Authorize]
         public IActionResult Trips()
         {
-            try
-            {
-                IEnumerable<Trip> trips = _repository.GetAllTrips();
-
-                return View(trips);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Failed to get trips in Index page: {ex.Message}");
-                return Redirect("/error");
-            }
+            return View();
         }
 
         public IActionResult Contact()
