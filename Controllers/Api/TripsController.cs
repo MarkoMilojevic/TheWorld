@@ -9,9 +9,11 @@ using Microsoft.Extensions.Logging;
 using WebApp.Models;
 using WebApp.Services;
 using WebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers.Api
 {
+    [Authorize]
     [Route("api/trips")]
     public class TripsController : Controller
     {
@@ -29,7 +31,7 @@ namespace WebApp.Controllers.Api
         {
             try
             {
-                IEnumerable<Trip> trips = _repository.GetAllTrips();
+                IEnumerable<Trip> trips = _repository.GetTripsByUsername(User.Identity.Name);
 
                 return Ok(Mapper.Map<IEnumerable<TripViewModel>>(trips));
             }
@@ -47,6 +49,8 @@ namespace WebApp.Controllers.Api
             if (ModelState.IsValid)
             {
                 Trip newTrip = Mapper.Map<Trip>(trip);
+
+                newTrip.UserName = User.Identity.Name;
 
                 _repository.AddTrip(newTrip);
                 if (await _repository.SaveChangesAsync())

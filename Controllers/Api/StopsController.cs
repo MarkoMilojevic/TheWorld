@@ -9,9 +9,11 @@ using Microsoft.Extensions.Logging;
 using WebApp.Models;
 using WebApp.Services;
 using WebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers.Api
 {
+    [Authorize]
     [Route("api/trips/{tripName}/stops")]
     public class StopsController : Controller
     {
@@ -31,7 +33,7 @@ namespace WebApp.Controllers.Api
         {
             try
             {
-                Trip trip = _repository.GetTripByName(tripName);
+                Trip trip = _repository.GetUserTripByName(tripName, User.Identity.Name);
 
                 return Ok(Mapper.Map<IEnumerable<StopViewModel>>(trip.Stops).OrderBy(s => s.Order));
             }
@@ -60,7 +62,7 @@ namespace WebApp.Controllers.Api
                     newStop.Latitude = result.Latitude;
                     newStop.Longitude = result.Longitude;
 
-                    _repository.AddStop(tripName, newStop);
+                    _repository.AddStop(tripName, newStop, User.Identity.Name);
                     if (await _repository.SaveChangesAsync())
                     {
                         return Created($"api/trips/{tripName}/stops/{newStop.Name}", Mapper.Map<StopViewModel>(newStop));

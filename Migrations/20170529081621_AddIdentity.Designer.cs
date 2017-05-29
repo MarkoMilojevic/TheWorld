@@ -8,9 +8,10 @@ using WebApp.Models;
 namespace webapp.Migrations
 {
     [DbContext(typeof(WorldContext))]
-    partial class WorldContextModelSnapshot : ModelSnapshot
+    [Migration("20170529081621_AddIdentity")]
+    partial class AddIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

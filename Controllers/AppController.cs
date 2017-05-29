@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -27,11 +28,17 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+        
+        [Authorize]
+        public IActionResult Trips()
+        {
             try
             {
-                IEnumerable<Trip> data = _repository.GetAllTrips();
+                IEnumerable<Trip> trips = _repository.GetAllTrips();
 
-                return View(data);
+                return View(trips);
             }
             catch (Exception ex)
             {

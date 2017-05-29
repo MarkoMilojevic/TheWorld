@@ -7,6 +7,8 @@ namespace WebApp.Models
     public interface IWorldRepository
     {
         IEnumerable<Trip> GetAllTrips();
+        
+        IEnumerable<Trip> GetTripsByUsername(string username);
 
         void AddTrip(Trip trip);
 
@@ -14,6 +16,8 @@ namespace WebApp.Models
 
         Trip GetTripByName(string tripName);
 
-        void AddStop(string tripName, Stop stop);
+        Trip GetUserTripByName(string tripName, string username);
+
+        void AddStop(string tripName, Stop stop, string username);
     }
 }

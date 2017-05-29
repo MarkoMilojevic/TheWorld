@@ -25,6 +25,15 @@ namespace WebApp.Models
             return _context.Trips.ToList();
         }
 
+        public IEnumerable<Trip> GetTripsByUsername(string username)
+        {
+            return _context
+                    .Trips
+                    .Include(t => t.Stops)
+                    .Where(t => t.UserName == username)
+                    .ToList();
+        }
+
         public void AddTrip(Trip trip)
         {
             _context.Trips.Add(trip);
@@ -43,9 +52,18 @@ namespace WebApp.Models
                 .FirstOrDefault(t => t.Name == tripName);
         }
 
-        public void AddStop(string tripName, Stop stop)
+        public Trip GetUserTripByName(string tripName, string username)
         {
-            Trip trip = GetTripByName(tripName);
+            return _context
+                .Trips
+                .Include(t => t.Stops)
+                .Where(t => t.Name == tripName && t.UserName == username)
+                .FirstOrDefault(t => t.Name == tripName);
+        }
+
+        public void AddStop(string tripName, Stop stop, string username)
+        {
+            Trip trip = GetUserTripByName(tripName, username);
             if (trip == null)
             {
                 return;
